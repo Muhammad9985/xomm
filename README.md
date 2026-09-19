@@ -10,6 +10,8 @@
 
 **A modern, cross-platform video conferencing application built with Flutter and WebRTC Full-Mesh P2P architecture, featuring zero-server-cost real-time audio/video streaming, host-controlled meetings, waiting room admission, and crystal-clear audio.**
 
+*Developed & Maintained by [Muhammad Rafique](https://mr-software.online/)*
+
 </div>
 
 ---
@@ -24,6 +26,7 @@
 7. [Key Features](#key-features)
 8. [Platform Support & Requirements](#platform-support--requirements)
 9. [Build & Installation](#build--installation)
+10. [Developer & Contact](#developer--contact)
 
 ---
 
@@ -195,3 +198,28 @@ flutter build apk --release --target-platform android-arm64
 ```
 The output APK will be located at:
 `build\app\outputs\flutter-apk\app-release.apk`.
+
+---
+
+## Developer & Contact
+
+**Muhammad Rafique** — Full-Stack & Cross-Platform Mobile/Desktop Engineer
+
+<p align="left">
+  <a href="https://github.com/Muhammad9985">
+    <img src="https://img.shields.io/badge/GitHub-Muhammad9985-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+  &nbsp;
+  <a href="https://www.linkedin.com/in/muhammad-rafique-944b05159/">
+    <img src="https://img.shields.io/badge/LinkedIn-Muhammad_Rafique-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  &nbsp;
+  <a href="https://mr-software.online/">
+    <img src="https://img.shields.io/badge/Website-mr--software.online-4CAF50?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website" />
+  </a>
+</p>
+
+- 🌐 **Portfolio & Services**: [https://mr-software.online/](https://mr-software.online/)
+- 💼 **LinkedIn**: [https://www.linkedin.com/in/muhammad-rafique-944b05159/](https://www.linkedin.com/in/muhammad-rafique-944b05159/)
+- 🐙 **GitHub**: [https://github.com/Muhammad9985](https://github.com/Muhammad9985)
+
