@@ -2,75 +2,136 @@
 
 <div align="center">
 
-![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)
-![WebRTC](https://img.shields.io/badge/WebRTC-Full--Mesh%20P2P-333333?style=for-the-badge&logo=webrtc&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-Cloud%20Firestore-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
-![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)
-![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20Web-4CAF50?style=for-the-badge)
+<br />
 
-**A modern, cross-platform video conferencing application built with Flutter and WebRTC Full-Mesh P2P architecture, featuring zero-server-cost real-time audio/video streaming, host-controlled meetings, waiting room admission, and crystal-clear audio.**
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
+[![WebRTC](https://img.shields.io/badge/WebRTC-Full--Mesh%20P2P-333333?style=for-the-badge&logo=webrtc&logoColor=white)](https://webrtc.org)
+[![Firebase](https://img.shields.io/badge/Firebase-Cloud%20Firestore-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com)
+[![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20Web-4CAF50?style=for-the-badge)](https://github.com/Muhammad9985)
+[![License](https://img.shields.io/badge/License-Proprietary-E53935?style=for-the-badge)](https://github.com/Muhammad9985)
 
-*Developed & Maintained by [Muhammad Rafique](https://mr-software.online/)*
+<br />
+
+### 🚀 Ultra-Low Latency • Serverless Media Relays • Direct Encrypted P2P Streams
+
+<p align="center">
+  <b>A modern cross-platform video conferencing application built with Flutter and WebRTC Full-Mesh architecture. Delivers zero-server-cost real-time audio/video streaming, carrier-grade acoustic echo cancellation, live screen sharing, host-controlled governance, and waiting room admission.</b>
+</p>
+
+<p align="center">
+  <a href="https://mr-software.online/"><strong>Website & Portfolio</strong></a> •
+  <a href="https://www.linkedin.com/in/muhammad-rafique-944b05159/"><strong>LinkedIn</strong></a> •
+  <a href="https://github.com/Muhammad9985"><strong>GitHub Profile</strong></a>
+</p>
 
 </div>
 
 ---
 
-## Table of Contents
-1. [Overview](#overview)
-2. [Architecture & How It Works](#architecture--how-it-works)
-3. [Capacity & Operating Limits](#capacity--operating-limits)
-4. [Audio Quality & Acoustic Engineering](#audio-quality--acoustic-engineering)
-5. [Video & Screen Sharing Specifications](#video--screen-sharing-specifications)
-6. [Security & Access Control](#security--access-control)
-7. [Key Features](#key-features)
-8. [Platform Support & Requirements](#platform-support--requirements)
-9. [Build & Installation](#build--installation)
-10. [Developer & Contact](#developer--contact)
+## 📌 Table of Contents
+
+- [Highlights](#-highlights)
+- [Architecture & P2P Topology](#-architecture--p2p-topology)
+- [Acoustic Engineering & Audio Quality](#-acoustic-engineering--audio-quality)
+- [Video & Screen Sharing Engine](#-video--screen-sharing-engine)
+- [Capacity & Mesh Scaling Limits](#-capacity--mesh-scaling-limits)
+- [Host Governance & Security](#-host-governance--security)
+- [Feature Matrix](#-feature-matrix)
+- [Platform Support](#-platform-support)
+- [Repository Notice](#-repository-notice)
+- [Developer & Contact](#-developer--contact)
 
 ---
 
-## Overview
+## ✨ Highlights
 
-**Xomm** is designed for ultra-low latency, decentralized video meetings across desktop and mobile devices. Unlike traditional video platforms that route all video and audio through costly central media servers (SFUs or MCUs), Xomm establishes **direct encrypted peer-to-peer (P2P) connections** between participants using WebRTC, with Google Cloud Firestore serving solely as the lightweight signaling and presence layer.
+| Feature | Technical Specification |
+| :--- | :--- |
+| **P2P Architecture** | Full-Mesh peer-to-peer using Google's native `libwebrtc` engine. Direct device-to-device transport without third-party SFU relay fees. |
+| **Acoustic Clarity** | Custom Opus SDP parameter injection (`stereo=0`, `useinbandfec=1`, `usedtx=1`) combined with hardware AEC, NS, and AGC. |
+| **Hot Track Swapping** | Seamlessly swap from camera to live screen share using `sender.replaceTrack()` without call renegotiation or dropped audio. |
+| **Waiting Room** | Selective admission control. Host can accept, deny, or "Admit All" guests prior to room entry. |
+| **Host Governance** | Exclusive **"End Meeting for All"** command backed by service-layer verification, dismissing all peers with auto-navigation. |
+| **Cross-Platform** | Single unified Dart codebase running natively on **Windows (x64)**, **Android (ARM64)**, and **Web**. |
 
 ---
 
-## Architecture & How It Works
+## 🏗️ Architecture & P2P Topology
+
+Xomm replaces costly central media servers (SFUs / MCUs) with a **direct peer-to-peer mesh**, leveraging Cloud Firestore solely as a transient signaling channel for SDP offers, answers, and ICE candidates:
 
 ```
-                        ┌─────────────────────────────────┐
-                        │   Google Cloud Firestore         │
-                        │   (Signaling & Metadata Only)   │
-                        └──────────────┬──────────────────┘
-                                       │  SDP Offers / Answers
-                                       │  ICE Candidates & Presence
-                     ┌─────────────────┼─────────────────┐
-                     ▼                 ▼                 ▼
-             ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-             │ Participant A │ │ Participant B │ │ Participant C │
-             │  (Desktop/PC) │ │   (Mobile)    │ │ (Laptop/Web)  │
-             └───────┬───────┘ └───────┬───────┘ └───────┬───────┘
-                     │                 │                 │
-                     │◄════════════════╪════════════════►│
-                     │   Direct P2P Encrypted Audio/Video│
-                     └─────────────────┴─────────────────┘
+                            ┌────────────────────────────────────┐
+                            │    Google Cloud Firestore          │
+                            │    (Signaling & Presence Layer)    │
+                            └─────────────────┬──────────────────┘
+                                              │  SDP Offers / Answers
+                                              │  ICE Candidates & Room State
+                         ┌────────────────────┼────────────────────┐
+                         ▼                    ▼                    ▼
+                ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+                │  Participant A   │ │  Participant B   │ │  Participant C   │
+                │  (Windows 64-bit)│ │ (Android Phone)  │ │ (Laptop / Web)   │
+                └────────┬─────────┘ └────────┬─────────┘ └────────┬─────────┘
+                         │                    │                    │
+                         │◄═══════════════════╪═══════════════════►│
+                         │     Direct Encrypted P2P Streams       │
+                         │      (DTLS-SRTP Audio / Video)         │
+                         └────────────────────┴────────────────────┘
 ```
 
-1. **Signaling Layer**: Cloud Firestore exchanges SDP (Session Description Protocol) offers, answers, and ICE candidates. No media payloads (audio, video, or screen streams) ever pass through Firebase or any central server.
-2. **Media Layer**: Built on Google's native `libwebrtc` engine. Media flows directly from device to device over DTLS-SRTP encrypted UDP connections via Google STUN servers.
-3. **Reactive State**: Meeting status, waiting room admissions, participants, and in-call chat update reactively in real time.
+1. **Signaling Exchange**: Participants connect to Firestore room listeners to exchange SDP descriptions and ICE candidates over secure WebSockets.
+2. **Direct P2P Transport**: Once ICE negotiation succeeds via Google STUN servers, media streams flow directly point-to-point over encrypted UDP (DTLS-SRTP).
+3. **Zero Media Data Storage**: Video and voice packets never pass through or touch Firestore, providing maximum confidentiality and zero per-gigabyte bandwidth costs.
 
 ---
 
-## Capacity & Operating Limits
+## 🎙️ Acoustic Engineering & Audio Quality
 
-Because Xomm uses a **Full-Mesh P2P** network topology, every participant sends and receives media directly to every other participant. Understanding this topology helps users and administrators plan room sizes and bandwidth expectations:
+To eliminate cross-device echo, hollow feedback loops, and ambient hiss (especially in mixed Mobile ⇄ PC environments), Xomm implements deep SDP voice tuning and audio pipeline isolation:
 
-### 1. Mesh Scaling Mathematics
-In a full-mesh topology of $N$ participants, each client maintains $(N - 1)$ upstream upload connections and $(N - 1)$ downstream download streams:
+### Dynamic Opus SDP Voice Profile
+Every WebRTC SDP offer and answer is dynamically injected with fine-tuned audio parameters:
 
-| Active Participants ($N$) | Total Peer Connections in Room | Streams Uploaded per Client | Streams Downloaded per Client |
+```
+minptime=10; ptime=20; useinbandfec=1; usedtx=1; stereo=0; sprop-stereo=0; maxaveragebitrate=32000; cbr=0
+```
+
+- **Forced Mono (`stereo=0`, `sprop-stereo=0`)**: Eliminates phase discrepancy between left and right channels, allowing native Acoustic Echo Cancellation (AEC) algorithms to cancel 100% of speaker bleed into the microphone.
+- **In-Band Forward Error Correction (`useinbandfec=1`)**: Automatically reconstructs missing audio packets during packet loss bursts on cellular or congested Wi-Fi networks.
+- **Discontinuous Transmission (`usedtx=1`)**: Automatically suppresses packet transmission when a participant is silent, eliminating ambient room hiss and saving uplink capacity.
+- **Vocal Bitrate Cap (`maxaveragebitrate=32000`)**: Optimizes crystal-clear wideband speech reproduction at 32 kbps while preserving network headroom for HD video.
+
+### Hardware & Software DSP
+- **Acoustic Echo Cancellation (AEC)**: Hardware AEC enabled on Android devices; software DSP fallback on desktop.
+- **Noise Suppression (NS)**: Filters constant noise like computer cooling fans, mechanical keyboard clicks, and air conditioning.
+- **Automatic Gain Control (AGC)**: Normalizes soft and loud vocal levels for comfortable listening without manual volume adjustments.
+
+---
+
+## 🖥️ Video & Screen Sharing Engine
+
+### Camera Video Pipeline
+- **Resolution**: 1280 × 720 (HD 720p) @ 30 FPS target on desktop; adaptive 640 × 480 to 720p on mobile.
+- **Hardware Acceleration**: VP8 and H.264 video encoding utilizing system hardware accelerators.
+- **Mobile Camera Controls**: Front/back camera flipping with automatic mirror correction for natural eye-contact perception.
+
+### Screen Sharing Implementation
+- **Instant Track Replacement**: Toggling screen sharing replaces the outgoing video track across all peer connections via `RTCRtpSender.replaceTrack()` without requiring full ICE renegotiation.
+- **Concurrent Audio Multiplexing**: Presenter's microphone stream remains live and multiplexed while sharing screens, allowing continuous presentation narration.
+- **Text Readability & Scaling**: Content is rendered using `RTCVideoViewObjectFitContain` mode with mirroring disabled (`mirror: false`), keeping text, charts, code, and spreadsheets perfectly crisp and uncropped.
+- **OS Lifecycle Handlers**: Native system hooks listen for the OS-level "Stop Sharing" floating button to instantly revert back to the user's camera feed.
+
+---
+
+## 📊 Capacity & Mesh Scaling Limits
+
+Because Xomm uses a **Full-Mesh P2P** network topology, every participant sends their stream to, and receives streams from, every other participant. This design is optimized for small-to-medium rooms:
+
+### Mesh Scaling Formula
+In a room with $N$ participants, each client maintains $(N - 1)$ upstream upload streams and $(N - 1)$ downstream download streams:
+
+| Active Participants ($N$) | Total Mesh Peer Connections | Upstream Streams / Client | Downstream Streams / Client |
 | :---: | :---: | :---: | :---: |
 | **2** (1-on-1 Call) | 1 | 1 | 1 |
 | **3** | 3 | 2 | 2 |
@@ -78,148 +139,66 @@ In a full-mesh topology of $N$ participants, each client maintains $(N - 1)$ ups
 | **6** | 15 | 5 | 5 |
 | **8** | 28 | 7 | 7 |
 
-### 2. Recommended Room Capacity
-- **Optimal (Best Experience)**: **2 to 6 participants**. At this level, CPU utilization remains low, latency is minimal (< 50 ms), and standard residential Wi-Fi/4G connections can easily handle the simultaneous streams.
-- **Supported Maximum**: **Up to 8–10 participants** on standard broadband connections (15+ Mbps symmetric upload/download).
-- **Not Intended For**: Broadcast webinars or 50+ person meetings (which require centralized media relays like Selective Forwarding Units (SFUs)).
-
-### 3. Bandwidth Guidelines
-- **Per Peer Uplink**: ~1.0 – 1.5 Mbps (720p HD Video + 32 kbps Opus Voice).
-- **Per Peer Downlink**: ~1.0 – 1.5 Mbps per remote video tile.
-- **Audio-Only Fallback**: If network bandwidth drops, camera video can be muted, reducing bandwidth usage to just ~32 kbps per peer.
+### Deployment Recommendations
+- **Optimal (Best Experience)**: **2 to 6 participants**. Very low CPU overhead, imperceptible latency (< 50 ms), and smooth operation on standard home broadband or 4G LTE.
+- **Supported Maximum**: **Up to 8–10 participants** on high-speed broadband connections (15+ Mbps symmetric upload/download).
+- **Not Intended For**: 50+ user broadcast webinars (which require centralized SFU relays).
 
 ---
 
-## Audio Quality & Acoustic Engineering
+## 🛡️ Host Governance & Security
 
-To prevent the feedback loops, ambient hum, and hollow echoes common in cross-device calls (such as Mobile ⇄ Laptop/Desktop), Xomm integrates a carrier-grade audio processing pipeline:
-
-### 1. Opus SDP Voice Tuning
-Every WebRTC SDP offer and answer is dynamically inspected and tuned with voice-specific parameters:
-```
-minptime=10; ptime=20; useinbandfec=1; usedtx=1; stereo=0; sprop-stereo=0; maxaveragebitrate=32000; cbr=0
-```
-- **Forced Mono (`stereo=0`, `sprop-stereo=0`)**: Eliminates phase discrepancies between microphone and speakers, allowing Acoustic Echo Cancellation (AEC) to cancel 100% of speaker bleed.
-- **In-Band Forward Error Correction (`useinbandfec=1`)**: Automatically reconstructs lost voice packets over unstable mobile or Wi-Fi networks, eliminating crackles and robotic distortion.
-- **Discontinuous Transmission (`usedtx=1`)**: Pauses transmission when a participant is silent, completely eliminating ambient background hiss and reducing bandwidth.
-- **Bitrate Cap (`maxaveragebitrate=32000`)**: Delivers wideband, crystal-clear vocal reproduction while conserving upstream bandwidth for video.
-
-### 2. Hardware & Software DSP
-- **Acoustic Echo Cancellation (AEC)**: Hardware-accelerated AEC on Android; software DSP fallback on desktop.
-- **Noise Suppression (NS)**: Filters out typing, fan noise, and air conditioning hum.
-- **Automatic Gain Control (AGC)**: Normalizes soft and loud speakers to consistent volume levels.
-- **Zero Duplicate Pipeline**: Remote audio tracks are decoded directly by `libwebrtc`'s native VoiceEngine, preventing software-induced feedback loops.
-
----
-
-## Video & Screen Sharing Specifications
-
-### Camera Video
-- **Desktop (Windows/macOS/Linux)**: 1280 × 720 (HD 720p) @ 30 FPS target.
-- **Mobile (Android/iOS)**: Adaptive 640 × 480 to 1280 × 720 @ 30 FPS, front/back camera toggling with automatic mirror correction.
-- **Codec**: VP8 / H.264 hardware-accelerated encoding and decoding.
-
-### Screen Sharing
-- **Live Peer Track Swapping**: When screen sharing is toggled, outgoing video tracks on all active peer connections are swapped in real time via `sender.replaceTrack(newTrack)` without call interruption or renegotiation delays.
-- **Concurrent Voice Retention**: Screen capture video is automatically multiplexed with the presenter's active microphone audio track, allowing the presenter to speak while presenting slides, documents, or code.
-- **Aspect-Ratio Fidelity**: Rendered in `RTCVideoViewObjectFitContain` mode with mirroring disabled (`mirror: false`), ensuring text, spreadsheets, and taskbars remain crisp and uncropped.
-- **Native OS Hooks**: Automatically listens to native system events (`track.onEnded`) so that clicking the OS "Stop Sharing" floating control cleanly restores camera video.
-
----
-
-## Security & Access Control
-
-1. **Host Privileges**:
-   - **Only the meeting creator (Host)** can trigger **"End Meeting for All"**.
-   - Room termination is verified both in the UI and enforced at the service layer (`MeetingService.endMeeting` rejects calls from non-host `requesterId`s).
-   - Ending the meeting automatically dismisses all connected participants, cleans up room presence in Firestore, and redirects everyone to the Home Screen.
-   - Non-host participants strictly have access to **"Leave Meeting"**.
-2. **Waiting Room Admission**:
-   - Hosts can toggle **Auto-Accept** on or off during room creation.
-   - When Auto-Accept is off, guests are held in a waiting room until the host selectively admits them or clicks **"Admit All"**.
+1. **Host-Enforced Session Termination**:
+   - Only the authenticated room creator (Host) has access to **"End Meeting for All"**.
+   - Non-host participants are restricted strictly to **"Leave Meeting"**.
+   - Termination is enforced at both the UI layer and verified in `MeetingService`, instantly dispatching an end-of-meeting signal to all connected peers, cleaning up room documents in Firestore, and auto-redirecting everyone back to the home screen.
+2. **Waiting Room & Access Control**:
+   - Hosts can toggle the **Waiting Room** on or off during room creation.
+   - When active, incoming guests are held in a waiting lobby until the host explicitly admits them individually or via **"Admit All"**.
 3. **End-to-End Media Encryption**:
-   - All media packets (audio, video, screen share) are encrypted point-to-point via **DTLS-SRTP** (AES-128 / AES-256).
+   - All real-time media streams (audio, video, and screen capture) are point-to-point encrypted using **DTLS-SRTP** (AES-128 / AES-256).
 
 ---
 
-## Key Features
+## 📱 Platform Support
 
-- **P2P Encrypted HD Video & Audio**: Full HD video calls with low latency.
-- **Host Room Controls**: Host badge indicators, waiting room approvals, and exclusive meeting termination controls.
-- **Clean Redirection**: Hardware and UI navigation safety via Flutter's `PopScope`, returning users directly to the Home Screen with clear status banners.
-- **Integrated In-Meeting Chat**: Real-time room messaging with automatic scrolling.
-- **View Modes**: Toggle between **Multiview Grid** and **Single Focused Presenter View**.
-- **1-Tap Room Sharing**: Formatted meeting codes (e.g., `XOM-767-822`) with one-touch clipboard copying and native share sheet integration.
-
----
-
-## Platform Support & Requirements
-
-| Platform | Architecture | Minimum Version | Distribution Type |
-|---|---|---|---|
+| Operating System | Architecture | Minimum Version | Distribution Artifact |
+| :--- | :--- | :--- | :--- |
 | **Windows Desktop** | x64 (64-bit) | Windows 10 (1809+) or Windows 11 | Standalone portable executable (`xomm.exe`) |
-| **Android** | arm64-v8a / armeabi-v7a | Android 8.0 (Oreo, API 26) or higher | Standalone APK (`Xomm_Android.apk`) |
+| **Android** | arm64-v8a / armeabi-v7a | Android 8.0 (Oreo, API 26) or higher | Standalone release APK (`Xomm_Android.apk`) |
 | **Web** | Modern Browsers | Chrome 90+, Edge 90+, Safari 14+ | WebAssembly / CanvasKit build |
 
 ---
 
-## Build & Installation
+## 🔒 Repository Notice
 
-### Prerequisites
-- [Flutter SDK](https://docs.flutter.dev/) (v3.12+ or latest stable)
-- [Dart SDK](https://dart.dev/)
-- For Windows Desktop: Visual Studio 2022 with "Desktop development with C++"
-- For Android: Android Studio & Android SDK (API 34+, NDK 28)
-
-### Clone & Install Dependencies
-```bash
-git clone https://github.com/Muhammad9985/xomm.git
-cd xomm
-flutter pub get
-```
-
-### Run Tests
-```bash
-flutter test
-```
-
-### Build Releases
-
-#### 1. Windows Desktop (Standalone)
-```bash
-flutter build windows --release
-```
-The compiled standalone package will be located at:
-`build\windows\x64\runner\Release\` (requires the `data\` folder adjacent to `xomm.exe`).
-
-#### 2. Android APK
-```bash
-flutter build apk --release --target-platform android-arm64
-```
-The output APK will be located at:
-`build\app\outputs\flutter-apk\app-release.apk`.
+> **Notice**: This repository serves as the public technical architecture overview, documentation showcase, and portfolio reference for **Xomm**. The proprietary source code and commercial release packages are maintained privately. 
+> 
+> If you are interested in a private demo, licensing, or commercial cross-platform WebRTC development, please reach out directly via the contact links below.
 
 ---
 
-## Developer & Contact
+## 👨‍💻 Developer & Contact
 
-**Muhammad Rafique** — Full-Stack & Cross-Platform Mobile/Desktop Engineer
+<div align="center">
 
-<p align="left">
+### **Muhammad Rafique**
+*Full-Stack & Cross-Platform Mobile / Desktop Engineer*
+
+<p align="center">
   <a href="https://github.com/Muhammad9985">
     <img src="https://img.shields.io/badge/GitHub-Muhammad9985-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
   </a>
-  &nbsp;
+  &nbsp;&nbsp;
   <a href="https://www.linkedin.com/in/muhammad-rafique-944b05159/">
     <img src="https://img.shields.io/badge/LinkedIn-Muhammad_Rafique-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
-  &nbsp;
+  &nbsp;&nbsp;
   <a href="https://mr-software.online/">
     <img src="https://img.shields.io/badge/Website-mr--software.online-4CAF50?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website" />
   </a>
 </p>
 
-- 🌐 **Portfolio & Services**: [https://mr-software.online/](https://mr-software.online/)
-- 💼 **LinkedIn**: [https://www.linkedin.com/in/muhammad-rafique-944b05159/](https://www.linkedin.com/in/muhammad-rafique-944b05159/)
-- 🐙 **GitHub**: [https://github.com/Muhammad9985](https://github.com/Muhammad9985)
+<sub>Copyright &copy; Muhammad Rafique. All rights reserved.</sub>
 
+</div>
