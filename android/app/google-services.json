@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077189994618",
+    "project_id": "xommm-5370c",
+    "storage_bucket": "xommm-5370c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077189994618:android:3d58a4b055db5b85dd73c3",
+        "android_client_info": {
+          "package_name": "com.xommm.app.xomm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFFfvzYOsGzIUA8-hq39FF2S1YjhXLS08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
